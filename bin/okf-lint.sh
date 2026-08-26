@@ -8,6 +8,12 @@
 #   (default)   full report, always exits 0
 #   --strict    conformance only, exits non-zero on any failure (for git hook / CI)
 #
+# Advisory checks (default mode only, never affect the exit code):
+#   - orphan concepts with no inbound links
+#   - agent-instruction files over the context budget (OKF_CONTEXT_BUDGET,
+#     default 200 lines) — these are loaded into context, so length is a
+#     standing cost on every session
+#
 # Conformance rules:
 #   - every scanned *.md file starts with `---` on line 1 and has a closing `---`
 #   - every scanned file has a non-empty `type:` in its frontmatter, EXCEPT
@@ -28,6 +34,11 @@ cd "$ROOT" || exit 2
 fail=0
 broken=0
 orphan_warn=0
+budget_warn=0
+
+# Agent-instruction files are loaded into context rather than searched, so their
+# length is a running cost on every session. Advisory only.
+CONTEXT_BUDGET="${OKF_CONTEXT_BUDGET:-200}"
 
 # Collect scanned markdown files (exclude raw/, .claude/, .git/).
 # AGENTS.md is a cross-vendor meta-doc whose spec is plain Markdown, so it is
@@ -172,6 +183,26 @@ if [ "$orphan_warn" -eq 0 ]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 4. Context budget for agent-instruction files (advisory only)
+# ---------------------------------------------------------------------------
 echo
-echo "Summary: ${fail} conformance failure(s), ${broken} broken link(s), ${orphan_warn} orphan warning(s)"
+echo "== Context budget (advisory, ${CONTEXT_BUDGET} lines) =="
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  n="$(grep -c '' "$f")"
+  if [ "$n" -gt "$CONTEXT_BUDGET" ]; then
+    echo "OVER BUDGET: $f — ${n} lines (budget ${CONTEXT_BUDGET})"
+    budget_warn=$((budget_warn + 1))
+  fi
+done < <(
+  printf '%s\n' CLAUDE.md AGENTS.md
+  find .claude/skills -type f -name 'SKILL.md' 2>/dev/null | sed 's|^\./||' | sort
+)
+if [ "$budget_warn" -eq 0 ]; then
+  echo "OK: all agent-instruction files within budget."
+fi
+
+# ---------------------------------------------------------------------------
+echo
+echo "Summary: ${fail} conformance failure(s), ${broken} broken link(s), ${orphan_warn} orphan warning(s), ${budget_warn} over budget"
 exit 0

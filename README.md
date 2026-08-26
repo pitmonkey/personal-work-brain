@@ -51,7 +51,7 @@ and stays coherent*.
 | `references/` | External and internal material distilled into concepts (type `Reference`). |
 | `people/` | Who owns what, who to ask, how teams and vendors operate (`Person` / `Org`). |
 | `me/` | Who you are and how you work — the context layer agents read first (type `Context`). |
-| `bin/` | The linter, the git-hook installer, and the Claude-config pointer installer. |
+| `bin/` | The linter (conformance, links, orphans, context budget), the git-hook installer, and the Claude-config pointer installer. |
 | `.claude/` | Agent skills and scratch — never part of the concept tree. |
 
 The tree starts deliberately small — six sections. New ones are added when
@@ -209,6 +209,16 @@ the graph anyway.
 **Private, and one-way.** Candour is the whole value of a personal store, and
 candour survives only while the audience is one person. Nothing shared may depend
 on a store only you can read.
+
+**A context budget on the instruction files.** `CLAUDE.md`, `AGENTS.md`, and the
+skills are loaded into context rather than searched, so every line is paid for in
+every session that touches the store — unlike a concept page, which costs nothing
+until something reads it. Published guidance on agent-instruction files puts the
+point of diminishing returns near 150 lines; this store budgets **200**, trading
+a little efficiency for rules that stay legible. The linter reports overruns as
+advisory, never blocking, and `OKF_CONTEXT_BUDGET` overrides it. The pressure
+valve is that rationale belongs in this README and rules belong in `CLAUDE.md` —
+when the budget bites, move explanation here rather than deleting a rule.
 
 **Actions live in the tracker, not here.** A todo is yours alone; an action item
 is a commitment to another person, and the person waiting needs to see it.
