@@ -1,0 +1,36 @@
+# OS junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Obsidian — keep vault settings, ignore per-machine workspace + cache
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.trash/
+
+# Python (linter/tooling scratch)
+.venv/
+__pycache__/
+*.pyc
+
+# Untracked working scratch (throwaway files, generation test output).
+# Anything worth keeping belongs in raw/ (immutable source) or the concept tree.
+scratch/
+
+# Belt and braces — never commit a credential file, even by accident.
+# raw/ is immutable and committed, so a secret that lands there is in history.
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*
+!.env.example
+credentials.json
+client_secret*.json
+*token*.json
+
+# Large binary sources normally live in raw/assets/. If they grow, track them
+# with Git LFS instead of committing them directly, e.g.:
+#   git lfs track "raw/assets/**"

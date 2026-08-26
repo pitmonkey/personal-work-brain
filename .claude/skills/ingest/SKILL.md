@@ -1,0 +1,47 @@
+---
+name: ingest
+description: Fold a raw/ source into the concept tree — read it in full, redact on capture, discuss takeaways, create/update dense concepts, flag contradictions, update index.md + log.md, and verify with the linter.
+---
+
+# Ingest
+
+Turn an immutable source in `raw/` into knowledge in the concept tree.
+
+## Steps
+
+1. **Read the source in full.** Do not skim. If it is binary (in `raw/assets/`),
+   read whatever text/metadata is available and note what you cannot inspect.
+2. **Redact on capture.** If you are *creating* the raw file (a thread dump,
+   meeting notes, an export), strip secrets, customer/personal data, privileged
+   material, and HR content **before it lands** — `raw/` is immutable and
+   committed, so deleting it later does not remove it from history. Leave a
+   `TODO:` marking the redaction. See *Confidentiality* in `CLAUDE.md`.
+3. **Discuss takeaways first.** Summarise the key points to the user and agree on
+   what is worth keeping *before* writing any concept. Prefer a handful of dense
+   points over an exhaustive dump.
+4. **Create or update concepts.** Enrich an existing page when one fits; only
+   create a new concept when the topic genuinely stands alone. Give every new
+   concept a non-empty `type` and place it in the right section directory. If
+   nothing fits, follow *Adding a section* rather than forcing it.
+5. **Point, don't mirror.** Keep the reasoning that would be expensive to lose;
+   link out for status, config, metrics, and anything with a live owner
+   elsewhere. If the page does mirror a source, put a **derived snapshot, as of
+   `<date>`, source: `<link>`** banner at the top.
+6. **Prefer a decision record.** If the source records a choice, write it up in
+   `decisions/` — including the options that lost and why.
+7. **Flag contradictions — never overwrite.** If the source conflicts with an
+   existing concept, add a visible `> ⚠️ CONTRADICTION:` note (or a `TODO:`) and
+   let the user resolve it. Do not silently replace prior content.
+8. **Never invent facts.** Anything the source does not establish is written as
+   `TODO:`.
+9. **Cross-link.** Add relative Markdown links to and from related concepts.
+10. **Update `index.md`** for any section whose contents changed.
+11. **Prepend a `log.md` entry** (dated, newest first) describing the ingest.
+12. **Verify:** run `bin/okf-lint.sh` and confirm no FAIL / no BROKEN.
+
+## Guardrails
+
+- `raw/` is immutable — read from it, never edit it.
+- Secrets and personal data never land, in `raw/` or the tree.
+- Fewer, denser pages beat many thin ones.
+- Links stay relative Markdown links, never wikilinks.
