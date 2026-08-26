@@ -36,11 +36,19 @@ Turn an immutable source in `raw/` into knowledge in the concept tree.
    `TODO:`.
 9. **Cross-link.** Add relative Markdown links to and from related concepts.
 10. **Update `index.md`** for any section whose contents changed.
-11. **Prepend a `log.md` entry** (dated, newest first) describing the ingest.
-12. **Verify:** run `bin/okf-lint.sh` and confirm no FAIL / no BROKEN.
+11. **Run the reaction pass.** Present the draft and ask what is wrong — what
+    feels off, what you assumed, what is missing. If the user says it looks good
+    with no changes, ask them to name the weakest or most generic sentence and
+    fix that one. **One push, not two**; if they say it is genuinely fine a
+    second time, accept it and move on. A rubber-stamped page is a mediocre page,
+    and the corrections are where the real signal is.
+12. **Prepend a `log.md` entry** (dated, newest first) describing the ingest.
+13. **Verify:** run `bin/okf-lint.sh` and confirm no FAIL / no BROKEN.
 
 ## Guardrails
 
+- **Be specific, not aspirational.** Record how things actually work, not how
+  they should. Confident wrong context is worse than no context.
 - `raw/` is immutable — read from it, never edit it.
 - Secrets and personal data never land, in `raw/` or the tree.
 - Fewer, denser pages beat many thin ones.

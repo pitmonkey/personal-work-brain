@@ -13,6 +13,10 @@ is true now; almost nothing records the options that lost and why. An ADR is the
 artifact that outlives the people who made the call. When a page could be a
 decision record, make it one.
 
+**Not to be confused with `me/`.** This section records *what was decided and
+why* — one ADR per choice. [`me/`](../me/index.md) records *how you decide*, as
+standing context. A specific choice is always a `Decision`, never a `me/` page.
+
 ## Shape
 
 Frontmatter carries `type: Decision`, a `status`, and a `timestamp`. The body

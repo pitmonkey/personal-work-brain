@@ -7,6 +7,66 @@ description: Append-only log of changes to the knowledge store, newest first.
 
 Append-only. Newest entries first. Each entry is date-prefixed (ISO 8601).
 
+## 2026-08-26 — added the me/ context layer, split the policy, added AGENTS.md
+
+Reviewed [nlwhittemore/personal-context-portfolio](https://github.com/nlwhittemore/personal-context-portfolio)
+(MIT) and the [AGENTS.md](https://github.com/agentsmd/agents.md) convention, and
+folded three things in. The podcast episode behind the portfolio was not readable
+from here — the audio host and the transcript mirror are both egress-blocked — so
+this rests on the repository, which is the substance anyway.
+
+**The portfolio is not a competing store; it is a layer this one was missing.**
+The work brain answers *what do I know* — third person, durable, unbounded. The
+portfolio answers *who am I and how do I work* — first person, an operating
+manual, fixed and small. The store had nothing of the second kind. New section
+[me/](me/index.md), four pages: identity, communication style, preferences and
+constraints, domain knowledge. Their other six files map onto sections that exist
+or are deliberately deferred, so they were not copied.
+
+**The fixed ten-file schema was rejected.** It contradicts *fewer, denser pages*
+and *add a section when something has nowhere to live* — pre-creating ten files
+buys ten thin pages on day one, the exact failure this store's policy exists to
+prevent. Also rejected: their lack of frontmatter, linter, and changelog (fine at
+ten files, not at sixty) and the web app, which would mean handing work context
+to a third party the confidentiality section was written against.
+
+**Two mechanics borrowed outright.** The *embedded interview protocol* — each
+`me/` page carries what it is for, the questions an agent should ask, and the
+output structure, so a blank page becomes a guided session. And the *reaction
+pass*: present the draft, ask what is wrong, and when the answer is "looks good",
+ask for the weakest sentence instead. One push, not two. That is now step 11 of
+the ingest skill and a standing writing rule. Their framing of staleness — a
+stale page is worse than none, because it gives agents confident but wrong
+context — sharpened the lint skill; it is the reason the derived-snapshot banner
+exists, stated better than the banner rule stated it.
+
+**`me/` vs `decisions/` disambiguated before they could collide.** The portfolio's
+`decision-log.md` records *how you decide*; this store's `decisions/` records
+*what was decided*. Both are worth having and the names would have drifted into
+each other, so the rule is written on both index pages: a specific choice is
+always a `Decision`.
+
+**The policy was too long, and the AGENTS.md spec is what surfaced it.** Research
+across 2,500+ repositories reports diminishing returns past ~150 lines;
+`CLAUDE.md` was at 212. It was doing two jobs — operational rules *and* the
+reasoning behind them. The rules stayed and are now 151 lines; the reasoning moved
+to a *Why the rules are what they are* section in [README.md](README.md), where a
+human reads it and an agent does not pay for it every session.
+
+**`AGENTS.md` added** as a thin cross-vendor pointer, so the store is legible to
+Codex, Cursor, Jules and the rest rather than Claude only. The spec is plain
+Markdown, so forcing OKF frontmatter onto it would have broken the convention:
+`bin/okf-lint.sh` now excludes the root `AGENTS.md` from its scan, and the file is
+listed as a reserved meta-doc.
+
+The `me/` pages ship **unfilled**, marked `filled: false`, with a `TODO:` and
+their interview protocol intact — writing them would have meant inventing facts
+about their subject.
+
+`TODO:` how the store is reached from an agent — a pointer in a global
+`CLAUDE.md`, a user-level skill, or an MCP server — is still undecided and wants
+a decision record rather than a default.
+
 ## 2026-08-26 — scaffolded the work brain
 
 Initial scaffold, adapted from a personal OKF + Karpathy knowledge store that had

@@ -14,7 +14,7 @@
 #     index.md, log.md, and the root README.md / CLAUDE.md (meta-docs)
 #   - `okf_version:` may appear in frontmatter ONLY in the root index.md
 #
-# Scanning skips raw/, .claude/ and .git/.
+# Scanning skips raw/, .claude/, .git/ and the root AGENTS.md.
 
 STRICT=0
 if [ "${1:-}" = "--strict" ]; then
@@ -30,10 +30,13 @@ broken=0
 orphan_warn=0
 
 # Collect scanned markdown files (exclude raw/, .claude/, .git/).
+# AGENTS.md is a cross-vendor meta-doc whose spec is plain Markdown, so it is
+# excluded from the scan rather than forced to carry OKF frontmatter.
 mapfile -t FILES < <(find . -type f -name '*.md' \
   -not -path './raw/*' \
   -not -path './.claude/*' \
   -not -path './.git/*' \
+  -not -path './AGENTS.md' \
   | sed 's|^\./||' | sort)
 
 # Strip fenced code blocks and inline backtick spans, so illustrative example

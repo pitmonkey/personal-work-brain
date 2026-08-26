@@ -21,6 +21,7 @@ progressive-disclosure entry point: start here and drill into a section.
 - [Runbooks](runbooks/index.md) — operational procedures.
 - [References](references/index.md) — external and internal material distilled into concepts.
 - [People](people/index.md) — who owns what, who to ask, how teams and vendors operate.
+- [Me](me/index.md) — who you are and how you work; the context layer agents read first.
 
 The tree starts deliberately small. New sections are added when something
 genuinely has nowhere to live — not in advance. See *Adding a section* in
