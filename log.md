@@ -7,6 +7,46 @@ description: Append-only log of changes to the knowledge store, newest first.
 
 Append-only. Newest entries first. Each entry is date-prefixed (ISO 8601).
 
+## 2026-08-26 — added an init skill and a Claude-config pointer installer
+
+New `bin/install-pointer.sh` and an [init](.claude/skills/init/SKILL.md) skill,
+closing the `TODO:` from the previous entry about how an agent reaches the store.
+
+**Settled: a filesystem pointer, not an MCP server.** The two are not equivalent.
+The maintenance loop *writes* — ingest, update indexes, prepend to the log, lint,
+commit — and a path gives read, write, grep and git history natively, where an
+MCP resource exposure is mostly read; serving the store over MCP would turn a
+maintained store into a lookup table. It is also the narrower surface, which the
+confidentiality rules argue for: a path only local Claude Code can see beats a
+server any connected client can query. MCP's one real advantage is reach from a
+client that cannot see the filesystem — which is exactly the case this store does
+not want. Recorded here for now; it should graduate to a `Decision` page.
+
+**The skill is the load-bearing half, not the global `CLAUDE.md` line.** A global
+pointer is loaded into every session, including the many with nothing to do with
+the store. A user-level skill keeps its one-line description always in context but
+loads its body only when a session is actually about the store. So the installer
+writes both: the skill carries the instructions, and the global pointer is two
+lines for discoverability, skippable with `--no-claude-md`.
+
+**Mechanical work in `bin/`, judgement in the skill** — the same split the store
+already uses for `okf-lint.sh` versus the `lint` skill. The script is idempotent
+and marker-delimited, supports `--dry-run` and `--uninstall`, and validates its
+`--label`. The skill drives it: dry-run first, show the user before touching
+anything in their global config, then apply.
+
+**A bug found by testing the case that actually applies here.** The first version
+hardcoded the pointer blurb as "private *work* knowledge store", which is wrong
+for any other store installed beside it — and a personal second brain alongside
+this one is the expected setup. The blurb is now read from each store's own root
+`index.md` `description:` frontmatter, so side-by-side stores describe themselves
+correctly; `--description` overrides it.
+
+Verified against a throwaway `CLAUDE_HOME`: dry-run writes nothing, install is
+idempotent across re-runs, pre-existing global `CLAUDE.md` content survives, two
+stores install side by side under distinct labels, uninstalling one leaves the
+other intact, and a shell-metacharacter label is rejected.
+
 ## 2026-08-26 — added the me/ context layer, split the policy, added AGENTS.md
 
 Reviewed [nlwhittemore/personal-context-portfolio](https://github.com/nlwhittemore/personal-context-portfolio)

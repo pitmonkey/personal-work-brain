@@ -44,7 +44,7 @@ and stays coherent*.
 | `references/` | External and internal material distilled into concepts (type `Reference`). |
 | `people/` | Who owns what, who to ask, how teams and vendors operate (`Person` / `Org`). |
 | `me/` | Who you are and how you work — the context layer agents read first (type `Context`). |
-| `bin/` | The linter and git-hook installer. |
+| `bin/` | The linter, the git-hook installer, and the Claude-config pointer installer. |
 | `.claude/` | Agent skills and scratch — never part of the concept tree. |
 
 The tree starts deliberately small — six sections. New ones are added when
@@ -68,10 +68,12 @@ agent, and the problem compounds as the number of agents you work with grows.
 
 ## Quick start
 
-1. **Install the hooks.** Run `bin/install-hooks.sh` once. It wires the strict
-   linter *and* a secret scan into a pre-commit hook. Install
-   [gitleaks](https://github.com/gitleaks/gitleaks) or `trufflehog` first —
-   without one, the hook warns but cannot scan.
+1. **Run init.** From this directory, run `claude` and invoke the `init` skill.
+   It wires the store into your Claude config, installs the git hooks, and tells
+   you what still needs filling in. Safe to re-run. To do it by hand instead:
+   `bin/install-pointer.sh --dry-run` then `bin/install-pointer.sh`, and
+   `bin/install-hooks.sh`. Install [gitleaks](https://github.com/gitleaks/gitleaks)
+   or `trufflehog` first — without one, the pre-commit hook warns but cannot scan.
 2. **Open as an Obsidian vault.** Point Obsidian at this folder. In
    *Settings → Files & Links*, turn **"Use \[\[Wikilinks\]\]" OFF** and set
    **"New link format" = Relative path to file**. This keeps every link a
@@ -90,6 +92,27 @@ agent, and the problem compounds as the number of agents you work with grows.
 6. **Write the first decision record.** The most useful starting page is usually
    a choice already made, written up while the reasoning is still recoverable.
 7. **Lint before committing.** `bin/okf-lint.sh` for a full report.
+
+## Reaching the store from an agent
+
+`bin/install-pointer.sh` installs two things into your Claude config:
+
+- a **user-level skill** at `~/.claude/skills/<label>/` — its description is
+  always in context, its body loads only when a session is actually about the
+  store, so unrelated sessions pay almost nothing;
+- a **two-line pointer** in your global `~/.claude/CLAUDE.md` for discoverability.
+
+Both are idempotent and marker-delimited, so re-running updates in place. Several
+stores can live side by side under distinct `--label`s, each taking its blurb
+from its own root `index.md`. Remove one with `--uninstall --label <name>`.
+
+This is deliberately a **filesystem pointer rather than an MCP server**. The
+maintenance loop needs to *write* — ingest, update indexes, prepend to the log,
+run the linter, commit — and a path gives read, write, grep, and git history for
+free, where an MCP resource would mostly give read. It is also the narrower
+surface: a path only local Claude Code can see, rather than a server any
+connected client can query. MCP earns its place only if you need the store from
+somewhere that cannot see the filesystem.
 
 ## Conventions in brief
 
