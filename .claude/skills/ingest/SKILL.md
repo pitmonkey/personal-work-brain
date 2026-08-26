@@ -5,17 +5,41 @@ description: Fold a raw/ source into the concept tree — read it in full, redac
 
 # Ingest
 
-Turn an immutable source in `raw/` into knowledge in the concept tree.
+Turn a source into knowledge in the concept tree.
+
+Sources arrive one of two ways. Most come through [`inbox/`](../../../inbox/README.md)
+— the uncommitted doorstep where the user drops something that has not been read
+or redacted yet. Some are already in `raw/`, promoted earlier or placed there
+directly because they carried nothing sensitive. **A source in `inbox/` is
+promoted into `raw/` as part of this skill** (step 2); a source already in `raw/`
+skips that step.
 
 ## Steps
 
 1. **Read the source in full.** Do not skim. If it is binary (in `raw/assets/`),
    read whatever text/metadata is available and note what you cannot inspect.
-2. **Redact on capture.** If you are *creating* the raw file (a thread dump,
-   meeting notes, an export), strip secrets, customer/personal data, privileged
-   material, and HR content **before it lands** — `raw/` is immutable and
-   committed, so deleting it later does not remove it from history. Leave a
-   `TODO:` marking the redaction. See *Confidentiality* in `CLAUDE.md`.
+2. **Promote from `inbox/` to `raw/`, redacting on the way.** Skip if the source
+   is already in `raw/`.
+
+   Write a **new, redacted** file at
+   `raw/clippings/<YYYY-MM-DD>-<short-slug>.md`. Strip secrets, customer and
+   personal data, privileged material, and HR content as you write it — `raw/` is
+   immutable *and* committed, so deleting the file later does not remove it from
+   history. Mark each removal with a `TODO:` rather than preserving the original.
+
+   Open the promoted file with a provenance header, so a snapshot is never
+   mistaken for current truth:
+
+   ```markdown
+   > **Source:** <what this is — meeting, thread, export, article>
+   > **Captured:** <YYYY-MM-DD>  ·  **Occurred:** <YYYY-MM-DD, if different>
+   > **Present / author:** <who, where relevant>
+   > **Redacted:** <what was removed, or "nothing">
+   ```
+
+   Ask the user for anything the file does not carry itself — a transcript rarely
+   states its own date, attendees, or what the meeting was for. Then tell them the
+   original can be deleted from `inbox/`; **never delete it yourself.**
 3. **Discuss takeaways first.** Summarise the key points to the user and agree on
    what is worth keeping *before* writing any concept. Prefer a handful of dense
    points over an exhaustive dump.
@@ -29,6 +53,14 @@ Turn an immutable source in `raw/` into knowledge in the concept tree.
    `<date>`, source: `<link>`** banner at the top.
 6. **Prefer a decision record.** If the source records a choice, write it up in
    `decisions/` — including the options that lost and why.
+
+   **Meetings especially.** A meeting is the most common source of ADRs in a work
+   store, and the rejected options are the part that exists nowhere else once the
+   room empties. From a meeting, look for: what was **decided** (→ `decisions/`),
+   what was **learned about a system** (→ `systems/`), and **who owns what** (→
+   `people/`). Actions the user agreed to belong in their tracker, **not** here —
+   this store is not a task list. Everything else is context the raw file already
+   holds; do not restate the transcript.
 7. **Flag contradictions — never overwrite.** If the source conflicts with an
    existing concept, add a visible `> ⚠️ CONTRADICTION:` note (or a `TODO:`) and
    let the user resolve it. Do not silently replace prior content.
@@ -49,7 +81,9 @@ Turn an immutable source in `raw/` into knowledge in the concept tree.
 
 - **Be specific, not aspirational.** Record how things actually work, not how
   they should. Confident wrong context is worse than no context.
-- `raw/` is immutable — read from it, never edit it.
+- `raw/` is immutable — read from it, never edit it. Promotion *creates* a new
+  file there; it never edits an existing one.
+- **Never delete from `inbox/`.** Say when a file is done with; the user clears it.
 - Secrets and personal data never land, in `raw/` or the tree.
 - Fewer, denser pages beat many thin ones.
 - Links stay relative Markdown links, never wikilinks.

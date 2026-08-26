@@ -43,6 +43,7 @@ and stays coherent*.
 | `CLAUDE.md` | The schema and editorial policy the agent follows. |
 | `AGENTS.md` | Cross-vendor pointer to `CLAUDE.md`, for agents that don't read it. |
 | `log.md` | Append-only changelog, newest first. |
+| `inbox/` | The doorstep. Drop sources here; **nothing in it is committed**. Cleared as things are ingested. |
 | `raw/` | **Immutable** source material — notes, exports, clippings, assets. Never edited; skipped by the linter. Redact *before* a file lands. |
 | `decisions/` | ADR-style decision records (type `Decision`). **The highest-value section.** |
 | `systems/` | Running systems, services, infrastructure (type `System`). |
@@ -98,6 +99,36 @@ agent, and the problem compounds as the number of agents you work with grows.
 6. **Write the first decision record.** The most useful starting page is usually
    a choice already made, written up while the reasoning is still recoverable.
 7. **Lint before committing.** `bin/okf-lint.sh` for a full report.
+
+## Getting things in
+
+```
+inbox/           →   raw/clippings/       →   the concept tree
+(you drop it)        (agent promotes a         (agent derives
+ uncommitted          redacted copy)            concepts)
+```
+
+Drop a file in [`inbox/`](inbox/README.md) and tell the agent it is there, with
+whatever context the file does not carry itself — a transcript rarely states its
+own date, attendees, or purpose:
+
+> *"New meeting transcript in `inbox/` — quarterly planning, 26 Aug, me plus the
+> platform leads. Mostly about whether we keep the shared staging cluster."*
+
+The agent reads it in full, talks the takeaways over with you, promotes a
+**redacted** copy into `raw/clippings/` with a provenance header, and folds what
+matters into concepts. You clear `inbox/` afterwards; the agent never deletes
+from it.
+
+**Two steps, not one, because `raw/` is committed.** A file that lands there is in
+git history for good. Meeting transcripts are the likeliest thing in any work
+store to carry a name, a customer, or an offhand remark that should never have
+been written down, so the redaction happens while the file is still uncommitted.
+
+**What survives a meeting** is narrower than the notes: what was *decided* (a
+`Decision` — the rejected options exist nowhere else once the room empties), what
+you *learned about a system*, and *who owns what*. Actions go in your tracker, not
+here.
 
 ## Reaching the store from an agent
 

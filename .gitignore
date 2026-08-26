@@ -18,6 +18,13 @@ __pycache__/
 # Anything worth keeping belongs in raw/ (immutable source) or the concept tree.
 scratch/
 
+# inbox/ is the doorstep: a place to drop a source that has not been read,
+# judged, or redacted yet, WITHOUT it becoming permanent. Nothing in it is
+# committed. The agent promotes a redacted copy into raw/ during ingest.
+inbox/*
+!inbox/README.md
+!inbox/.gitkeep
+
 # Belt and braces — never commit a credential file, even by accident.
 # raw/ is immutable and committed, so a secret that lands there is in history.
 *.pem

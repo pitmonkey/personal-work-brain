@@ -14,7 +14,7 @@
 #     index.md, log.md, and the root README.md / CLAUDE.md (meta-docs)
 #   - `okf_version:` may appear in frontmatter ONLY in the root index.md
 #
-# Scanning skips raw/, .claude/, .git/ and the root AGENTS.md.
+# Scanning skips raw/, inbox/, .claude/, .git/ and the root AGENTS.md.
 
 STRICT=0
 if [ "${1:-}" = "--strict" ]; then
@@ -34,6 +34,7 @@ orphan_warn=0
 # excluded from the scan rather than forced to carry OKF frontmatter.
 mapfile -t FILES < <(find . -type f -name '*.md' \
   -not -path './raw/*' \
+  -not -path './inbox/*' \
   -not -path './.claude/*' \
   -not -path './.git/*' \
   -not -path './AGENTS.md' \
