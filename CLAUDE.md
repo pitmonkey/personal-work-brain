@@ -173,6 +173,17 @@ each, so it cannot drift from a copy here. Rules that hold across all four:
   generic sentence and fix that. **One push, not two.**
 - **Short beats long.** A dense page outperforms a sprawling one.
 
+## Context budget
+
+`CLAUDE.md`, `AGENTS.md`, and each `SKILL.md` are **loaded into context**, not
+searched, so their length is a standing cost on every session. Budget: **200
+lines each**, checked advisorily by `bin/okf-lint.sh` and overridable with
+`OKF_CONTEXT_BUDGET`.
+
+Over budget, move *rationale* to [README.md](README.md) — where a human reads it
+and an agent does not pay for it — and keep the rules here. Cut explanation
+before you cut a rule.
+
 ## Guardrails
 
 - **Fewer, denser pages.** Consolidate before you fragment.

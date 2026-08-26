@@ -11,9 +11,13 @@ Keep the store healthy — mechanical checks plus judgement.
 
 1. **Run the linter.** `bin/okf-lint.sh` (full report). It checks: opening/closing
    frontmatter, a non-empty `type` (except meta-docs), `okf_version` placement,
-   broken relative `.md` links, and orphan concepts (advisory).
-2. **Read the report.** Resolve every FAIL and BROKEN. Orphan warnings are
-   advisory — decide case by case whether to link the page in or remove it.
+   broken relative `.md` links, orphan concepts (advisory), and the context
+   budget on agent-instruction files (advisory, 200 lines).
+2. **Read the report.** Resolve every FAIL and BROKEN. Orphan and OVER BUDGET
+   warnings are advisory — decide case by case whether to link an orphan in or
+   remove it, and on an overrun move *rationale* out to `README.md` rather than
+   dropping a rule. Never cut a rule to hit the budget; raise it with the user
+   instead.
 3. **Apply judgement** the linter cannot. Staleness is the failure mode that
    matters most here: **a page six months stale is worse than no page**, because
    it gives agents confident but wrong context. Look for:
