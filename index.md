@@ -30,6 +30,12 @@ genuinely has nowhere to live — not in advance. See *Adding a section* in
 Apart from the decision records describing how the store works, the sections
 start empty. [log.md](log.md) records changes from the first ingest onward.
 
+## Getting things in
+
+Drop a source into [`inbox/`](inbox/README.md) — the uncommitted doorstep — and
+ask the agent to ingest it. It promotes a redacted copy into `raw/` and derives
+concepts from there. Nothing is ingested straight from `inbox/` into the tree.
+
 ## Raw sources
 
 The [`raw/`](raw/README.md) directory holds **immutable** source material —

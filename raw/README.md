@@ -16,6 +16,19 @@ are derived *from*.
 - **Skipped by the linter.** `bin/okf-lint.sh` excludes `raw/` entirely, so its
   contents are never checked for frontmatter, `type`, or links.
 
+## Who puts things here
+
+**Normally the agent, not you.** Drop sources into [`inbox/`](../inbox/README.md)
+— uncommitted — and the ingest step promotes a redacted copy here with an
+ISO-date name and a provenance header. Writing into `raw/` yourself means
+committing to a file before anything has read it, which is the one thing this
+directory's immutability makes expensive to undo.
+
+The exception: a source carrying **nothing sensitive** and already in good shape
+— a public article, your own vendor-neutral notes — can go straight into
+`clippings/` with an ISO-date prefix. Meetings, exported threads, and anything
+involving named people or customers should go through `inbox/`.
+
 ## Redact before it lands
 
 Immutability cuts both ways: a file here is committed, and deleting it later does

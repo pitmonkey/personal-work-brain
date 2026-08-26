@@ -31,6 +31,11 @@ A **private, personal** knowledge store on work topics.
 Agent scratch lives under `.claude/`, **never** in the concept tree.
 [`AGENTS.md`](AGENTS.md) is a reserved cross-vendor pointer to this file.
 
+[`inbox/`](inbox/README.md) is **not a layer** — it is the doorstep. Uncommitted,
+unscanned, a place to drop a source before it has been read or redacted. Ingest
+promotes a redacted copy into `raw/`; nothing is ever ingested straight from
+`inbox/` into the tree.
+
 ## Confidentiality
 
 **Never record, in `raw/` or the tree:**
@@ -43,7 +48,8 @@ Agent scratch lives under `.claude/`, **never** in the concept tree.
 
 **Redact before the file lands, not after.** `raw/` is immutable *and* committed,
 so a secret pasted there is in git history and deleting the file does not remove
-it. `TODO:` the redaction rather than preserving the original "just in case". If
+it. This is what `inbox/` is for: the redaction happens on the way from `inbox/`
+to `raw/`, while the file is still uncommitted. `TODO:` the redaction rather than preserving the original "just in case". If
 something slipped in, say so immediately — the fix gets harder the longer it waits.
 
 **People are a special case.** [`people/`](people/index.md) records what helps you
@@ -117,8 +123,9 @@ Ignore `http(s)://` links and `#anchors` when reasoning about internal structure
 
 ## The four operations
 
-**1. Ingest** — fold a `raw/` source into the tree. Read it in full; redact on
-capture; discuss takeaways before writing; enrich an existing dense page over
+**1. Ingest** — fold a source into the tree. Read it in full; promote it from
+`inbox/` to `raw/` redacting on the way, with a provenance header; discuss
+takeaways before writing; enrich an existing dense page over
 spawning a thin one; run the reaction pass; flag contradictions with
 `> ⚠️ CONTRADICTION:` rather than overwriting; update `index.md`; prepend to
 `log.md`; verify with `bin/okf-lint.sh`.
