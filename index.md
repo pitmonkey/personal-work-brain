@@ -27,6 +27,9 @@ The tree starts deliberately small. New sections are added when something
 genuinely has nowhere to live — not in advance. See *Adding a section* in
 [CLAUDE.md](CLAUDE.md).
 
+Apart from the decision records describing how the store works, the sections
+start empty. [log.md](log.md) records changes from the first ingest onward.
+
 ## Raw sources
 
 The [`raw/`](raw/README.md) directory holds **immutable** source material —

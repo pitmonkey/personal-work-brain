@@ -15,6 +15,12 @@ that doubles as an Obsidian vault and as working context for an LLM agent.
 > over the store. The rules that make it safe to be candid in here are in
 > [CLAUDE.md](CLAUDE.md).
 
+**This repository is a scaffold.** Copy it, then make it yours. It ships with the
+file contract, the linter, the agent skills, the section skeleton, and three
+decision records describing how it works — but **no content**. The changelog is
+empty by design: the first entry is written when you ingest your first source,
+not by the act of setting the store up.
+
 ## Why OKF + Karpathy
 
 Two ideas combine here:
@@ -166,10 +172,33 @@ the graph anyway.
 candour survives only while the audience is one person. Nothing shared may depend
 on a store only you can read.
 
+## Making it yours
+
+Before the first real ingest, three things are worth settling:
+
+1. **Where the repository lives.** This is what actually enforces the privacy
+   rule. A personal-account repo keeps the store yours but may collide with an
+   employer's IP policy on work notes; an organisation-hosted private repo is
+   policy-safe but readable by anyone with admin, which quietly kills the candour
+   the store depends on. There is no default that is right for everyone — pick
+   deliberately, and write it up as your first ADR.
+2. **A secret scanner.** `bin/install-hooks.sh` wires one into the pre-commit
+   hook if it finds `gitleaks` or `trufflehog`; without one it warns but cannot
+   scan. `raw/` is immutable and committed, so this hook is the last cheap place
+   to stop a pasted credential entering history permanently.
+3. **The `me/` pages.** They ship unfilled. Until they are done, agents are
+   working without the context layer the store exists to provide.
+
+Then edit this README to describe *your* store rather than the scaffold, and
+delete this section.
+
 ## Credits
 
-Adapted from a personal OKF + Karpathy knowledge store. The `me/` context layer,
-its embedded interview protocols, and the reaction pass are adapted from
+The file contract is the Open Knowledge Format; the maintenance loop follows
+Andrej Karpathy's LLM-wiki pattern — see
+[ADR 0001](decisions/0001-okf-file-contract-and-agent-maintained-loop.md). The
+`me/` context layer, its embedded interview protocols, and the reaction pass are
+adapted from
 [nlwhittemore/personal-context-portfolio](https://github.com/nlwhittemore/personal-context-portfolio)
-(MIT). `AGENTS.md` follows the [AGENTS.md](https://github.com/agentsmd/agents.md)
-convention. Per-change rationale is in [log.md](log.md).
+(MIT); see [ADR 0003](decisions/0003-separate-me-context-layer.md). `AGENTS.md`
+follows the [AGENTS.md](https://github.com/agentsmd/agents.md) convention.
