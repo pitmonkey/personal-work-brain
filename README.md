@@ -51,6 +51,7 @@ and stays coherent*.
 | `references/` | External and internal material distilled into concepts (type `Reference`). |
 | `people/` | Who owns what, who to ask, how teams and vendors operate (`Person` / `Org`). |
 | `me/` | Who you are and how you work — the context layer agents read first (type `Context`). |
+| `docs/` | Explanation moved out of the files agents load — read on demand, not budgeted. |
 | `bin/` | The linter (conformance, links, orphans, context budget), the git-hook installer, and the Claude-config pointer installer. |
 | `.claude/` | Agent skills and scratch — never part of the concept tree. |
 
@@ -108,55 +109,18 @@ inbox/           →   raw/clippings/       →   the concept tree
  uncommitted          redacted copy)            concepts)
 ```
 
-Drop a file in [`inbox/`](inbox/README.md) and tell the agent it is there, with
-whatever context the file does not carry itself — a transcript rarely states its
-own date, attendees, or purpose:
-
-> *"New meeting transcript in `inbox/` — quarterly planning, 26 Aug, me plus the
-> platform leads. Mostly about whether we keep the shared staging cluster."*
-
-The agent reads it in full, talks the takeaways over with you, promotes a
-**redacted** copy into `raw/clippings/` with a provenance header, and folds what
-matters into concepts. You clear `inbox/` afterwards; the agent never deletes
-from it.
-
-**Two steps, not one, because `raw/` is committed.** A file that lands there is in
-git history for good. Meeting transcripts are the likeliest thing in any work
-store to carry a name, a customer, or an offhand remark that should never have
-been written down, so the redaction happens while the file is still uncommitted.
-
-**What survives a meeting** is narrower than the notes: what was *decided* (a
-`Decision` — the rejected options exist nowhere else once the room empties), what
-you *learned about a system*, and *who owns what*.
-
-**Action items are extracted, then handed off — never stored.** The agent files
-them in your tracker where it can, otherwise presents them ready to paste, and
-the `log.md` entry names where they went. That entry is the receipt: the raw file
-holds what was said forever, so *"what were the actions from that meeting?"* stays
-answerable, while done-or-not lives only in the tracker. If they could not be
-filed in the session, the entry carries a `> ⏳ UNFILED:` marker that the lint
-pass raises until a later entry names where they landed.
+Drop a source in [`inbox/`](inbox/README.md), tell the agent it is there, and it
+promotes a **redacted** copy into `raw/` before deriving concepts. Action items
+are extracted and handed off to your tracker, never stored. Full walkthrough:
+[docs/capture.md](docs/capture.md).
 
 ## Reaching the store from an agent
 
-`bin/install-pointer.sh` installs two things into your Claude config:
-
-- a **user-level skill** at `~/.claude/skills/<label>/` — its description is
-  always in context, its body loads only when a session is actually about the
-  store, so unrelated sessions pay almost nothing;
-- a **two-line pointer** in your global `~/.claude/CLAUDE.md` for discoverability.
-
-Both are idempotent and marker-delimited, so re-running updates in place. Several
-stores can live side by side under distinct `--label`s, each taking its blurb
-from its own root `index.md`. Remove one with `--uninstall --label <name>`.
-
-This is deliberately a **filesystem pointer rather than an MCP server**. The
-maintenance loop needs to *write* — ingest, update indexes, prepend to the log,
-run the linter, commit — and a path gives read, write, grep, and git history for
-free, where an MCP resource would mostly give read. It is also the narrower
-surface: a path only local Claude Code can see, rather than a server any
-connected client can query. MCP earns its place only if you need the store from
-somewhere that cannot see the filesystem.
+`bin/install-pointer.sh` installs a user-level skill plus a two-line pointer in
+your global `CLAUDE.md`, so agents find the store without you pasting anything.
+It is a filesystem pointer rather than an MCP server, deliberately — see
+[ADR 0002](decisions/0002-filesystem-pointer-not-mcp-server.md). Setup and
+options: [docs/agent-access.md](docs/agent-access.md).
 
 ## Conventions in brief
 
@@ -174,60 +138,19 @@ somewhere that cannot see the filesystem.
   source carry a dated *derived snapshot* banner and graduate to a pointer.
 - **Never capture** secrets, customer or personal data, privileged material, or
   HR and compensation matters — in `raw/` or the tree.
+- **200-line context budget** on `CLAUDE.md`, `AGENTS.md`, `README.md`, and each
+  `SKILL.md`, since those are loaded rather than searched. Over budget,
+  explanation moves to [`docs/`](docs/README.md) and the rule stays put.
 - **Be specific, not aspirational**, and **run the reaction pass** on every draft:
   present it, ask what's wrong, and if the answer is "looks good", ask for the
   weakest sentence instead. One push, not two.
 
 ## Why the rules are what they are
 
-`CLAUDE.md` states the rules; this section is the reasoning behind the ones that
-look arbitrary.
-
-**Three layers, strictly separated.** Mixing immutable sources, derived concepts,
-and the policy governing both is what turns note stores into sludge. Sources can
-be trusted precisely because they are never edited; concepts can be rewritten
-freely precisely because the sources survive.
-
-**Fewer, denser pages.** Thin pages fragment a topic across files nobody
-reassembles. This cuts against the atomic-note tradition deliberately: atomicity
-optimises for linking, density optimises for an agent loading one page and having
-the whole picture.
-
-**`decisions/` leads.** Turnover and time destroy *why we did it this way* faster
-than anything else. Code, tickets, and dashboards all record what is true now;
-almost nothing records the options that lost. An ADR outlives the people who made
-the call.
-
-**Point, don't mirror.** Duplicating a system of record produces a page that is
-wrong within a fortnight and that nobody trusts. Worse, a stale page is not
-neutral — it hands an agent confident but wrong context.
-
-**Relative links, never wikilinks.** Wikilinks are more pleasant to type and bind
-you to one editor. Relative links keep the bundle portable while Obsidian renders
-the graph anyway.
-
-**Private, and one-way.** Candour is the whole value of a personal store, and
-candour survives only while the audience is one person. Nothing shared may depend
-on a store only you can read.
-
-**A context budget on the instruction files.** `CLAUDE.md`, `AGENTS.md`, and the
-skills are loaded into context rather than searched, so every line is paid for in
-every session that touches the store — unlike a concept page, which costs nothing
-until something reads it. Published guidance on agent-instruction files puts the
-point of diminishing returns near 150 lines; this store budgets **200**, trading
-a little efficiency for rules that stay legible. The linter reports overruns as
-advisory, never blocking, and `OKF_CONTEXT_BUDGET` overrides it. The pressure
-valve is that rationale belongs in this README and rules belong in `CLAUDE.md` —
-when the budget bites, move explanation here rather than deleting a rule.
-
-**Actions live in the tracker, not here.** A todo is yours alone; an action item
-is a commitment to another person, and the person waiting needs to see it.
-Recording one in a private store buys the tracking overhead with none of the
-accountability. This is also why `todos/` is a weaker fit at work than at home:
-you already have a tracker, and two lists means neither is trusted. The store
-keeps the *record* — the raw file holds what was said, permanently, so "what were
-the actions from that meeting?" stays answerable — while the tracker keeps the
-*state*.
+The reasoning behind the rules that look arbitrary — three strictly separated
+layers, fewer and denser pages, `decisions/` leading, point-don't-mirror,
+relative links, private-and-one-way, and actions living in the tracker — is in
+[docs/rationale.md](docs/rationale.md).
 
 ## Making it yours
 
