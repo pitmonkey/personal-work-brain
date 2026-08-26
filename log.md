@@ -17,6 +17,10 @@ found, or the judgement call you made. Write that.
 What was created, updated, or retired, with relative links to the pages
 involved. Why it mattered: the trigger, the reasoning worth keeping, any
 contradiction surfaced, and anything deliberately left out.
+
+> ⏳ UNFILED: <only if action items were extracted and not yet filed in the
+> tracker — one line each. The lint pass raises this until a later entry
+> names where they landed.>
 ```
 
 Every ingest, synthesis, and lint pass gets an entry. Nothing is recorded below
