@@ -127,8 +127,15 @@ been written down, so the redaction happens while the file is still uncommitted.
 
 **What survives a meeting** is narrower than the notes: what was *decided* (a
 `Decision` — the rejected options exist nowhere else once the room empties), what
-you *learned about a system*, and *who owns what*. Actions go in your tracker, not
-here.
+you *learned about a system*, and *who owns what*.
+
+**Action items are extracted, then handed off — never stored.** The agent files
+them in your tracker where it can, otherwise presents them ready to paste, and
+the `log.md` entry names where they went. That entry is the receipt: the raw file
+holds what was said forever, so *"what were the actions from that meeting?"* stays
+answerable, while done-or-not lives only in the tracker. If they could not be
+filed in the session, the entry carries a `> ⏳ UNFILED:` marker that the lint
+pass raises until a later entry names where they landed.
 
 ## Reaching the store from an agent
 
@@ -202,6 +209,15 @@ the graph anyway.
 **Private, and one-way.** Candour is the whole value of a personal store, and
 candour survives only while the audience is one person. Nothing shared may depend
 on a store only you can read.
+
+**Actions live in the tracker, not here.** A todo is yours alone; an action item
+is a commitment to another person, and the person waiting needs to see it.
+Recording one in a private store buys the tracking overhead with none of the
+accountability. This is also why `todos/` is a weaker fit at work than at home:
+you already have a tracker, and two lists means neither is trusted. The store
+keeps the *record* — the raw file holds what was said, permanently, so "what were
+the actions from that meeting?" stays answerable — while the tracker keeps the
+*state*.
 
 ## Making it yours
 

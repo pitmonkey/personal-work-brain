@@ -59,7 +59,10 @@ deliverable. What matters is:
   exists nowhere else once the room empties.
 - **What you learned about a system** → [`systems/`](../systems/index.md).
 - **Who owns what, and who to ask** → [`people/`](../people/index.md).
-- **Actions you agreed to** → your tracker, **not** here. This store is not a
-  task list, and nothing at work links back to it.
+- **Actions you agreed to** → your tracker, **not** here. An action item is a
+  commitment to another person, and the person waiting needs to see it. Ingest
+  extracts them and hands them off — filing them for you where it can, otherwise
+  presenting them ready to paste — and the `log.md` entry names where they went.
+  The store keeps the *record*; the tracker keeps the *state*.
 
 Everything else is context that the raw file already holds.

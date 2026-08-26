@@ -26,6 +26,11 @@ Keep the store healthy — mechanical checks plus judgement.
    - **Orphan** — a real concept with no inbound links; wire it in or retire it.
    - **Duplicate** — two thin pages that should be merged into one dense one.
    - **Missing** — a page the tree clearly implies but does not yet have.
+   - **Unfiled actions** — `grep '⏳ UNFILED' log.md`. Each marker is an action
+     item extracted from a source but never filed in the tracker, which is the
+     one way this store can silently lose a commitment. Raise every one; it is
+     discharged by a later log entry naming where the actions landed, never by
+     recording their status here.
    - **Unfilled context** — anything in `me/` still carrying `filled: false`, or
      a filled page whose role, stack, or priorities have since moved. These are
      read at the start of every task, so they rot loudest.

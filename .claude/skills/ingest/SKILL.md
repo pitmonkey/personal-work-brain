@@ -58,9 +58,10 @@ skips that step.
    store, and the rejected options are the part that exists nowhere else once the
    room empties. From a meeting, look for: what was **decided** (→ `decisions/`),
    what was **learned about a system** (→ `systems/`), and **who owns what** (→
-   `people/`). Actions the user agreed to belong in their tracker, **not** here —
-   this store is not a task list. Everything else is context the raw file already
-   holds; do not restate the transcript.
+   `people/`). Everything else is context the raw file already holds; do not
+   restate the transcript.
+
+   **Action items are extracted but never stored** — see step 12.
 7. **Flag contradictions — never overwrite.** If the source conflicts with an
    existing concept, add a visible `> ⚠️ CONTRADICTION:` note (or a `TODO:`) and
    let the user resolve it. Do not silently replace prior content.
@@ -74,8 +75,34 @@ skips that step.
     fix that one. **One push, not two**; if they say it is genuinely fine a
     second time, accept it and move on. A rubber-stamped page is a mediocre page,
     and the corrections are where the real signal is.
-12. **Prepend a `log.md` entry** (dated, newest first) describing the ingest.
-13. **Verify:** run `bin/okf-lint.sh` and confirm no FAIL / no BROKEN.
+12. **Hand off the action items — never merely mention them.** An action item is
+    a commitment to another person, so it lives in the user's tracker, never in
+    the store. Extracting them and stopping there loses them, so finish the
+    handoff:
+
+    - **File them where you can.** If a tracker is reachable (GitHub Issues, or
+      an MCP server for Jira, Linear, or similar), offer to create them and do
+      so on the user's nod. Capture the *why* from the meeting in the body, not
+      just the one-line title.
+    - **Otherwise present them ready to paste** — one line each, with owner and
+      any date the source gave.
+
+    Do **not** invent an owner or a due date the source did not state, and do not
+    file an action the user has not seen.
+
+13. **Prepend a `log.md` entry** (dated, newest first) describing the ingest, and
+    **name the actions and where they went** — the log is the receipt that ties
+    the record here to the tracking elsewhere. If they could not be filed in this
+    session, mark the entry:
+
+    ```markdown
+    > ⏳ UNFILED: 3 action items extracted, not yet in the tracker — <one line each>
+    ```
+
+    The lint pass raises that marker until a later entry names where they landed.
+    Never record status here; done-or-not lives only in the tracker.
+
+14. **Verify:** run `bin/okf-lint.sh` and confirm no FAIL / no BROKEN.
 
 ## Guardrails
 
@@ -84,6 +111,10 @@ skips that step.
 - `raw/` is immutable — read from it, never edit it. Promotion *creates* a new
   file there; it never edits an existing one.
 - **Never delete from `inbox/`.** Say when a file is done with; the user clears it.
+- **Never store an action item**, and never let one be extracted without a
+  handoff. The store keeps the *record* — the raw file holds what was said, so
+  "what were the actions from that meeting?" stays answerable forever — while the
+  tracker keeps the *state*.
 - Secrets and personal data never land, in `raw/` or the tree.
 - Fewer, denser pages beat many thin ones.
 - Links stay relative Markdown links, never wikilinks.

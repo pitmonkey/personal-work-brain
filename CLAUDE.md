@@ -47,9 +47,9 @@ promotes a redacted copy into `raw/`; nothing is ever ingested straight from
 - **HR and compensation matters** — salaries, performance material, complaints.
 
 **Redact before the file lands, not after.** `raw/` is immutable *and* committed,
-so a secret pasted there is in git history and deleting the file does not remove
-it. This is what `inbox/` is for: the redaction happens on the way from `inbox/`
-to `raw/`, while the file is still uncommitted. `TODO:` the redaction rather than preserving the original "just in case". If
+so a secret pasted there is in git history for good. That is what `inbox/` is
+for: redaction happens on the way from `inbox/` to `raw/`, while the file is
+still uncommitted. `TODO:` each removal rather than keeping the original. If
 something slipped in, say so immediately — the fix gets harder the longer it waits.
 
 **People are a special case.** [`people/`](people/index.md) records what helps you
@@ -93,6 +93,33 @@ has nowhere to live: add the directory, give it an `index.md`, link it from the
 root [`index.md`](index.md), add a row above, and log it. `projects/`, `todos/`,
 `ideas/`, `meetings/`, `orgs/` earn their place by being needed, not predicted.
 
+## What this store does not track
+
+The store records **what happened and why**, never **what is outstanding**. Sort
+by *who is waiting*:
+
+| | Who is waiting | Where it lives |
+| --- | --- | --- |
+| Inline `TODO:` | nobody — a gap in a page | the page that owns it |
+| A todo | only you | the store, if it clears the bar below |
+| **An action item** | **someone else** | **your tracker — never here** |
+
+**Never record an action item here.** It is a commitment to another person and
+must live where that person can see it.
+
+**Hand off, never merely mention** — extracting actions without filing them loses
+them. File them in the tracker where you can, otherwise present them ready to
+paste. Either way the `log.md` entry names what was extracted and where it went;
+that is the receipt. If they could not be filed in that session, mark the entry
+`> ⏳ UNFILED:`, which the lint pass raises until a later entry names where they
+landed. **Nothing here records status** — done-or-not lives only in the tracker.
+
+**A todo earns a place here only if all three hold:** nobody else is waiting on
+it, it fits no tracker you have, and its *why* outweighs its *what*. Then add
+`todos/` per *Adding a section* — one dense page per area, each todo a heading
+with a **`Done when:`** line. If that line cannot be written it is not a todo. No
+due dates or priority; the store cannot nag, so those fields only rot.
+
 ## Point, don't mirror
 
 This store is **not a copy** of the ticket tracker, wiki, repo, or dashboard.
@@ -123,22 +150,19 @@ Ignore `http(s)://` links and `#anchors` when reasoning about internal structure
 
 ## The four operations
 
-**1. Ingest** — fold a source into the tree. Read it in full; promote it from
-`inbox/` to `raw/` redacting on the way, with a provenance header; discuss
-takeaways before writing; enrich an existing dense page over
-spawning a thin one; run the reaction pass; flag contradictions with
-`> ⚠️ CONTRADICTION:` rather than overwriting; update `index.md`; prepend to
-`log.md`; verify with `bin/okf-lint.sh`.
+**Ingest** a source into concepts · **Query** the tree and cite what the answer
+rests on · **Synthesize** pages connecting existing concepts, pushing links back
+· **Lint** with `bin/okf-lint.sh` plus the judgement it cannot apply.
 
-**2. Query** — answer from the concept tree first, fall back to `raw/` only when
-insufficient, cite what the answer rests on, offer to file it back.
+The steps live in `.claude/skills/<operation>/SKILL.md` — the single definition of
+each, so it cannot drift from a copy here. Rules that hold across all four:
 
-**3. Synthesize** — write overview / comparison pages tying concepts together, and
-push cross-links **back** into the pages being connected.
-
-**4. Lint** — run `bin/okf-lint.sh`, then apply judgement the linter cannot
-(stale, expired snapshots, graduation due, duplicate, missing, leakage).
-Auto-apply mechanical fixes only; raise the rest. Log the pass.
+- **Discuss takeaways before writing**, and enrich a dense page over spawning a
+  thin one.
+- **Flag contradictions** with `> ⚠️ CONTRADICTION:`; never silently overwrite.
+- **Update the section `index.md`** and **prepend a `log.md` entry** for any
+  change to the tree.
+- **Verify with `bin/okf-lint.sh`** and resolve every FAIL and BROKEN.
 
 ## Writing rules
 
