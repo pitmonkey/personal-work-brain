@@ -12,7 +12,8 @@
 #   - orphan concepts with no inbound links
 #   - agent-instruction files over the context budget (OKF_CONTEXT_BUDGET,
 #     default 200 lines) — these are loaded into context, so length is a
-#     standing cost on every session
+#     standing cost on every session. Overflow belongs in docs/, which is
+#     read on demand and therefore not budgeted.
 #
 # Conformance rules:
 #   - every scanned *.md file starts with `---` on line 1 and has a closing `---`
@@ -37,7 +38,8 @@ orphan_warn=0
 budget_warn=0
 
 # Agent-instruction files are loaded into context rather than searched, so their
-# length is a running cost on every session. Advisory only.
+# length is a running cost on every session. Overflow moves to docs/, which is
+# linked and read on demand, so docs/ is deliberately not budgeted. Advisory only.
 CONTEXT_BUDGET="${OKF_CONTEXT_BUDGET:-200}"
 
 # Collect scanned markdown files (exclude raw/, .claude/, .git/).
@@ -69,6 +71,7 @@ is_type_exempt() {
   esac
   case "$f" in
     README.md|CLAUDE.md) return 0 ;;
+    docs/*) return 0 ;;
   esac
   return 1
 }
@@ -195,7 +198,7 @@ while IFS= read -r f; do
     budget_warn=$((budget_warn + 1))
   fi
 done < <(
-  printf '%s\n' CLAUDE.md AGENTS.md
+  printf '%s\n' CLAUDE.md AGENTS.md README.md
   find .claude/skills -type f -name 'SKILL.md' 2>/dev/null | sed 's|^\./||' | sort
 )
 if [ "$budget_warn" -eq 0 ]; then

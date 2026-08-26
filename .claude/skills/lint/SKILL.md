@@ -15,9 +15,10 @@ Keep the store healthy — mechanical checks plus judgement.
    budget on agent-instruction files (advisory, 200 lines).
 2. **Read the report.** Resolve every FAIL and BROKEN. Orphan and OVER BUDGET
    warnings are advisory — decide case by case whether to link an orphan in or
-   remove it, and on an overrun move *rationale* out to `README.md` rather than
-   dropping a rule. Never cut a rule to hit the budget; raise it with the user
-   instead.
+   remove it, and on an overrun move the *explanation* into `docs/<topic>.md`,
+   leaving the rule behind with a link to it. `docs/` is read on demand and is
+   not budgeted, which is what makes it the valve. Never cut a rule to hit the
+   budget; raise it with the user instead.
 3. **Apply judgement** the linter cannot. Staleness is the failure mode that
    matters most here: **a page six months stale is worse than no page**, because
    it gives agents confident but wrong context. Look for:

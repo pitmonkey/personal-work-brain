@@ -175,14 +175,15 @@ each, so it cannot drift from a copy here. Rules that hold across all four:
 
 ## Context budget
 
-`CLAUDE.md`, `AGENTS.md`, and each `SKILL.md` are **loaded into context**, not
-searched, so their length is a standing cost on every session. Budget: **200
-lines each**, checked advisorily by `bin/okf-lint.sh` and overridable with
-`OKF_CONTEXT_BUDGET`.
+`CLAUDE.md`, `AGENTS.md`, `README.md`, and each `SKILL.md` are **loaded into
+context**, not searched, so their length is a standing cost on every session.
+Budget: **200 lines each**, checked advisorily by `bin/okf-lint.sh` and
+overridable with `OKF_CONTEXT_BUDGET`.
 
-Over budget, move *rationale* to [README.md](README.md) — where a human reads it
-and an agent does not pay for it — and keep the rules here. Cut explanation
-before you cut a rule.
+**Over budget, move the explanation to [`docs/`](docs/README.md)** — one page per
+topic — and leave the rule here with a link to it. `docs/` is read on demand, so
+it is not budgeted; that is what makes it the pressure valve. Never cut a rule to
+fit; move explanation, or raise the overrun with the user.
 
 ## Guardrails
 

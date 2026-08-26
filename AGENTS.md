@@ -14,6 +14,8 @@ four operations that grow the store.
 - [`log.md`](log.md) is the append-only changelog, newest first.
 - Sections: `decisions/`, `systems/`, `runbooks/`, `references/`, `people/`, `me/`.
 - [`raw/`](raw/README.md) is immutable source material. Read from it; never edit it.
+- [`docs/`](docs/README.md) explains how the store works — capture, agent access,
+  and the reasoning behind the rules. Read on demand, not up front.
 
 ## The four operations
 
