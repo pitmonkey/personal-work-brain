@@ -21,7 +21,9 @@
 #     index.md, log.md, and the root README.md / CLAUDE.md (meta-docs)
 #   - `okf_version:` may appear in frontmatter ONLY in the root index.md
 #
-# Scanning skips raw/, inbox/, .claude/, .git/ and the root AGENTS.md.
+# Scanning skips raw/, inbox/, templates/, .obsidian/, .claude/, .git/ and the
+# root AGENTS.md. Daily notes (daily/) are exempt from the orphan check: nothing
+# is expected to link to a day, so every note would otherwise warn.
 
 STRICT=0
 if [ "${1:-}" = "--strict" ]; then
@@ -42,12 +44,14 @@ budget_warn=0
 # linked and read on demand, so docs/ is deliberately not budgeted. Advisory only.
 CONTEXT_BUDGET="${OKF_CONTEXT_BUDGET:-200}"
 
-# Collect scanned markdown files (exclude raw/, .claude/, .git/).
+# Collect scanned markdown files (exclude raw/, templates/, .obsidian/, .claude/, .git/).
 # AGENTS.md is a cross-vendor meta-doc whose spec is plain Markdown, so it is
 # excluded from the scan rather than forced to carry OKF frontmatter.
 mapfile -t FILES < <(find . -type f -name '*.md' \
   -not -path './raw/*' \
   -not -path './inbox/*' \
+  -not -path './templates/*' \
+  -not -path './.obsidian/*' \
   -not -path './.claude/*' \
   -not -path './.git/*' \
   -not -path './AGENTS.md' \
@@ -175,6 +179,9 @@ for f in "${FILES[@]}"; do
   base="${f##*/}"
   case "$base" in
     index.md|log.md|README.md|CLAUDE.md) continue ;;
+  esac
+  case "$f" in
+    daily/*) continue ;;
   esac
   if ! printf '%s\n' "$LINKS_ALL" | grep -qF "$base"; then
     echo "ORPHAN: $f — no inbound markdown links found"
