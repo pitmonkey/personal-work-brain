@@ -41,7 +41,7 @@ Sources arrive one of two ways. Most come through [`inbox/`](../../../inbox/READ
 12. **Turn the action items into todos — never merely mention them.** Read `tracker` and `todo_mode` from `me/working-setup.md` (if `todo_mode` is `unset`, ask, and write the answer back). Then, for each action:
 
     - **Someone else is waiting, and a tracker is set:** offer to file it there (GitHub Issues, or an MCP server for Jira, Linear, or similar) and do so on the user's nod, with the _why_ from the source in the body. The store keeps a link, never a copy.
-    - **Otherwise:** add it as a `- [ ]` checkbox to the meeting page if step 6 made one, else to the source date's daily note (create it from `templates/daily.md` if missing), with the raw source linked.
+    - **Otherwise:** add it as a `- [ ]` checkbox to the meeting page if step 6 made one, else to today's daily note, with the raw source linked. If today's note does not exist, create it from `templates/daily.md` and fill in the placeholders (`{{date:…}}` with today's date in the given format).
 
     Do **not** invent an owner or a due date the source did not state, and do not file an action the user has not seen.
 

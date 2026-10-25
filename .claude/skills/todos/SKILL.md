@@ -22,7 +22,7 @@ Write the answer into the frontmatter. Set `filled: true` only if the tracker qu
 
 ### 2a. In-place mode
 
-Search `daily/`, `meetings/`, and `todos/` for open items — lines matching `- [ ]` (any indent). Skip `templates/`. List them:
+Search `daily/`, `meetings/`, and `todos/` for open items — lines matching `- [ ]` followed by text (any indent). Ignore an empty checkbox — every daily note starts with one from the template. Skip `templates/`. List them:
 
 - grouped by source note, newest first;
 - each with a relative link to its note and its age in days (from the filename date, or the note's `timestamp`);
@@ -32,7 +32,7 @@ Search `daily/`, `meetings/`, and `todos/` for open items — lines matching `- 
 
 ### 2b. Rollup mode
 
-For each open `- [ ]` in a daily note or meeting page **dated before today**:
+For each open `- [ ]` with text (ignore an empty checkbox) in a daily note or meeting page **dated before today**:
 
 1. Append it to `todos/index.md` under an `## <Area>` heading. Reuse an existing area when one fits; ask when it is unclear. Keep a link to the source note after the text: `- [ ] <text> ([2026-10-25](../daily/2026-10-25.md))`.
 2. Replace the original line with `- [>] <text> → [todos](../todos/index.md)` (fix the relative path for the note's folder). `[>]` renders as checked in core Obsidian and no longer matches `- [ ]`, so nothing is counted twice.

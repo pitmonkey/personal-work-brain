@@ -1,7 +1,7 @@
 ---
 type: Daily
 title: "{{date:YYYY-MM-DD}}"
-timestamp: {{date:YYYY-MM-DD}}
+timestamp: "{{date:YYYY-MM-DD}}"
 tags: [daily]
 ---
 

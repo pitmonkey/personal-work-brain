@@ -18,8 +18,8 @@ Keep the store healthy — mechanical checks plus judgement.
    - **Orphan** — a real concept with no inbound links; wire it in or retire it.
    - **Duplicate** — two thin pages that should be merged into one dense one.
    - **Missing** — a page the tree clearly implies but does not yet have.
-   - **Stale todos** — open `- [ ]` items in `daily/`, `meetings/`, or `todos/` whose note is dated more than 30 days ago. Advisory: list them and ask whether each is still live, done, or dropped; never tick or delete one unasked.
-   - **Not rolled up** — only when `me/working-setup.md` has `todo_mode: rollup`: open items in daily notes dated before today. Offer to run the `todos` skill.
+   - **Stale todos** — open `- [ ]` items with text (ignore an empty checkbox) in `daily/`, `meetings/`, or `todos/`, dated more than 30 days ago — by the note's date, or for `todos/index.md` by the source link on the item. Advisory: list them and ask whether each is still live, done, or dropped; never tick or delete one unasked.
+   - **Not rolled up** — only when `me/working-setup.md` has `todo_mode: rollup`: open items in daily notes or meeting pages dated before today. Offer to run the `todos` skill.
    - **Unfilled context** — anything in `me/` still carrying `filled: false`, or a filled page whose role, stack, or priorities have since moved. These are read at the start of every task, so they rot loudest.
    - **Leakage** — anything that reads like a secret, customer data, or an HR matter. Raise it immediately; do not quietly delete, because the file is already in history and the user needs to know.
 4. **Auto-apply only mechanical fixes** (fix a broken link, add missing frontmatter, correct `okf_version` placement). Raise everything judgemental with the user before changing it.

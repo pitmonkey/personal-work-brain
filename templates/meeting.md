@@ -1,7 +1,7 @@
 ---
 type: Meeting
 title: "{{title}}"
-timestamp: {{date:YYYY-MM-DD}}
+timestamp: "{{date:YYYY-MM-DD}}"
 tags: [meeting]
 ---
 

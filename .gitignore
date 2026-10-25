@@ -6,6 +6,10 @@ Desktop.ini
 # Obsidian — keep vault settings, ignore per-machine workspace + cache
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+# Community plugins keep their settings — sometimes API keys or tokens — in
+# plugins/<id>/data.json. Never commit them; only the core settings ship.
+.obsidian/plugins/
+.obsidian/community-plugins.json
 .obsidian/cache
 .trash/
 

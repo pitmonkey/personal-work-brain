@@ -76,7 +76,7 @@ The store **may track todos.** Why, and the full workday flow: [docs/daily-notes
 - **Read [`me/working-setup.md`](me/working-setup.md) first.** Its `tracker` and `todo_mode` frontmatter govern everything below; if `todo_mode` is `unset`, ask.
 - **Tracker preferred for others' work.** If `tracker` is set, offer to file a todo someone else is waiting on there; once filed, keep a link, never a copy. With no tracker, it stays a checkbox here.
 - **Two modes.** `in-place`: todos stay put; the `todos` skill finds them. `rollup`: open todos older than today move to `todos/index.md`, leaving `- [>] <text> → [todos](../todos/index.md)` behind.
-- **Daily notes are yours.** `daily/YYYY-MM-DD.md`, created by Obsidian from `templates/daily.md`. The agent never rewrites their prose; it may tick, move (rollup), promote a meeting, and add links. Daily notes are not listed in an index and are exempt from the orphan check.
+- **Daily notes are yours.** `daily/YYYY-MM-DD.md`, created by Obsidian from `templates/daily.md`. The agent never rewrites their prose; it may tick, move (rollup), add checkboxes (ingest), promote a meeting, and add links. Daily notes are not listed in an index and are exempt from the orphan check.
 - **Confidentiality applies while typing.** Daily notes skip the `inbox/` redaction step; the _Confidentiality_ rules hold anyway.
 - **Big meetings graduate** to `meetings/YYYY-MM-DD-slug.md` (`type: Meeting`), linked both ways with the day. Decisions in them still become ADRs.
 - **Extracted action items never vanish** — each lands as a checkbox or a tracker link, and the `log.md` entry says which.
